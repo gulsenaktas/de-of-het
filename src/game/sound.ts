@@ -70,9 +70,21 @@ let context: AudioContext | undefined
 function audioContext(): AudioContext | undefined {
   if (typeof AudioContext === 'undefined') return undefined
   context ??= new AudioContext()
-  // Browsers keep the context suspended until the first user gesture.
-  if (context.state === 'suspended') void context.resume()
+  if (context.state !== 'running') void context.resume()
   return context
+}
+
+const UNLOCK_EVENTS = ['pointerup', 'touchend', 'keydown'] as const
+
+// Browsers only let audio start from a tap, click or key press. The end of a swipe does not
+// count on iOS, so a player who only swipes would never hear anything. Waking the context on
+// any earlier tap (the Start button, for one) makes the first swipe audible.
+export function unlockAudioOnFirstGesture(): () => void {
+  const unlock = () => void audioContext()
+  for (const event of UNLOCK_EVENTS) window.addEventListener(event, unlock, { passive: true })
+  return () => {
+    for (const event of UNLOCK_EVENTS) window.removeEventListener(event, unlock)
+  }
 }
 
 export function playSound(name: SoundName): void {

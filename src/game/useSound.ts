@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { playSound, type SoundName } from './sound'
+import { playSound, unlockAudioOnFirstGesture, type SoundName } from './sound'
 
 const SOUND_KEY = 'de-of-het:sound'
 
@@ -13,6 +13,8 @@ function readEnabled(): boolean {
 
 export function useSound() {
   const [enabled, setEnabled] = useState(readEnabled)
+
+  useEffect(unlockAudioOnFirstGesture, [])
 
   useEffect(() => {
     try {

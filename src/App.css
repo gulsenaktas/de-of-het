@@ -435,28 +435,41 @@
   background: #fff;
   box-shadow: var(--shadow);
   text-align: center;
+}
+
+.result__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding-bottom: 20px;
   overflow-y: auto;
+  /* Fades the last rows out so a long list reads as "there is more below". */
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
 }
 
 .result__title {
-  font-size: 32px;
+  font-size: 26px;
   font-weight: 700;
 }
 
 .result__subtitle {
-  font-size: 17px;
+  font-size: 15px;
   opacity: 0.6;
 }
 
 .result__score {
-  font-size: 76px;
+  font-size: 58px;
   font-weight: 700;
   line-height: 1;
   color: var(--blue);
 }
 
 .result__score span {
-  font-size: 34px;
+  font-size: 28px;
   color: var(--ink);
   opacity: 0.4;
 }
@@ -466,7 +479,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 2px;
-  font-size: 26px;
+  font-size: 22px;
 }
 
 .tulip {
@@ -500,7 +513,7 @@
   align-items: baseline;
   gap: 8px;
   padding: 3px 0;
-  font-size: 18px;
+  font-size: 17px;
 }
 
 .result__picture {
@@ -524,7 +537,7 @@
 }
 
 .result__stats {
-  margin-top: auto;
+  font-size: 14px;
 }
 
 /* ---------- Start ---------- */

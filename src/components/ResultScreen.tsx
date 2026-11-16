@@ -31,44 +31,46 @@ export function ResultScreen({ answers, bestStreak, progress, onPlayAgain }: Res
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ type: 'spring', stiffness: 300, damping: 24 }}
     >
-      <h2 className="result__title">{title.nl}</h2>
-      <p className="result__subtitle">{title.en}</p>
+      <div className="result__body">
+        <h2 className="result__title">{title.nl}</h2>
+        <p className="result__subtitle">{title.en}</p>
 
-      <p className="result__score">
-        {score}
-        <span>/{answers.length}</span>
-      </p>
+        <p className="result__score">
+          {score}
+          <span>/{answers.length}</span>
+        </p>
 
-      <div className="result__tulips" aria-hidden>
-        {answers.map((answer, i) => (
-          <motion.span
-            key={i}
-            className={answer.correct ? 'tulip' : 'tulip tulip--missed'}
-            initial={{ scale: 0, rotate: -30 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{ type: 'spring', stiffness: 500, damping: 14, delay: 0.25 + i * 0.06 }}
-          >
-            🌷
-          </motion.span>
-        ))}
-      </div>
-
-      {mistakes.length > 0 && (
-        <div className="result__mistakes">
-          <h3>Worth another look</h3>
-          <ul>
-            {mistakes.map(({ word }) => (
-              <li key={word.nl}>
-                <WordPicture word={word} className="result__picture" />
-                <strong>
-                  <em className={`article article--${word.article}`}>{word.article}</em> {word.nl}
-                </strong>
-                <span className="result__meaning">{word.en}</span>
-              </li>
-            ))}
-          </ul>
+        <div className="result__tulips" aria-hidden>
+          {answers.map((answer, i) => (
+            <motion.span
+              key={i}
+              className={answer.correct ? 'tulip' : 'tulip tulip--missed'}
+              initial={{ scale: 0, rotate: -30 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: 'spring', stiffness: 500, damping: 14, delay: 0.25 + i * 0.06 }}
+            >
+              🌷
+            </motion.span>
+          ))}
         </div>
-      )}
+
+        {mistakes.length > 0 && (
+          <div className="result__mistakes">
+            <h3>Worth another look</h3>
+            <ul>
+              {mistakes.map(({ word }) => (
+                <li key={word.nl}>
+                  <WordPicture word={word} className="result__picture" />
+                  <strong>
+                    <em className={`article article--${word.article}`}>{word.article}</em> {word.nl}
+                  </strong>
+                  <span className="result__meaning">{word.en}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
 
       <p className="stats result__stats">
         <span>🌱 {practising} practising</span>
