@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, motion, useAnimate } from 'motion/react'
 import type { Article, Word } from './data/words'
+import { completeRound, readProgress, recordAnswer, saveProgress } from './game/progress'
 import { buildRound, readBestStreak, saveBestStreak, type Answer } from './game/round'
 import { ruleFor } from './game/rules'
 import { useSound } from './game/useSound'
@@ -27,7 +28,8 @@ interface Feedback {
 }
 
 export default function App() {
-  const [round, setRound] = useState(() => buildRound())
+  const [progress, setProgress] = useState(readProgress)
+  const [round, setRound] = useState(() => buildRound(progress))
   const [answers, setAnswers] = useState<Answer[]>([])
   const [streak, setStreak] = useState(0)
   const [bestStreak, setBestStreak] = useState(readBestStreak)
@@ -47,9 +49,14 @@ export default function App() {
       if (!current) return
       const correct = picked === current.article
       const nextStreak = correct ? streak + 1 : 0
+      const isLastWord = index === round.length - 1
 
       setExitDirection(picked === 'de' ? -1 : 1)
       setAnswers((prev) => [...prev, { word: current, picked, correct }])
+      setProgress((prev) => {
+        const next = recordAnswer(prev, current.nl, correct)
+        return isLastWord ? completeRound(next) : next
+      })
       setStreak(nextStreak)
       if (nextStreak > bestStreak) {
         setBestStreak(nextStreak)
@@ -69,7 +76,7 @@ export default function App() {
         animateStack(stackRef.current, { x: [0, -12, 12, -7, 7, 0] }, { duration: 0.4 })
       }
     },
-    [current, streak, bestStreak, index, animateStack, stackRef, playSound],
+    [current, streak, bestStreak, index, round.length, animateStack, stackRef, playSound],
   )
 
   useEffect(() => {
@@ -80,6 +87,8 @@ export default function App() {
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [answer])
+
+  useEffect(() => saveProgress(progress), [progress])
 
   useEffect(() => {
     if (!feedback) return
@@ -98,7 +107,7 @@ export default function App() {
   }, [finished, showResult, answers, playSound])
 
   function playAgain() {
-    setRound(buildRound())
+    setRound(buildRound(progress))
     setAnswers([])
     setStreak(0)
     setFeedback(null)
@@ -132,7 +141,7 @@ export default function App() {
         </header>
 
         {showResult ? (
-          <ResultScreen answers={answers} bestStreak={bestStreak} onPlayAgain={playAgain} />
+          <ResultScreen answers={answers} bestStreak={bestStreak} progress={progress} onPlayAgain={playAgain} />
         ) : (
           <>
             <ol className="progress" aria-label={`Word ${Math.min(index + 1, round.length)} of ${round.length}`}>

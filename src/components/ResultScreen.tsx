@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import { summarize, type Progress } from '../game/progress'
 import type { Answer } from '../game/round'
 import { WordPicture } from './WordPicture'
 
@@ -13,13 +14,15 @@ function headline(score: number, total: number): { nl: string; en: string } {
 interface ResultScreenProps {
   answers: Answer[]
   bestStreak: number
+  progress: Progress
   onPlayAgain: () => void
 }
 
-export function ResultScreen({ answers, bestStreak, onPlayAgain }: ResultScreenProps) {
+export function ResultScreen({ answers, bestStreak, progress, onPlayAgain }: ResultScreenProps) {
   const score = answers.filter((a) => a.correct).length
   const mistakes = answers.filter((a) => !a.correct)
   const title = headline(score, answers.length)
+  const { learned, practising } = summarize(progress)
 
   return (
     <motion.section
@@ -67,7 +70,11 @@ export function ResultScreen({ answers, bestStreak, onPlayAgain }: ResultScreenP
         </div>
       )}
 
-      <p className="result__best">🔥 Best streak: {bestStreak}</p>
+      <p className="result__stats">
+        <span>🌱 {practising} practising</span>
+        <span>🎓 {learned} learned</span>
+        <span>🔥 Best streak: {bestStreak}</span>
+      </p>
 
       <motion.button
         className="btn btn--play"

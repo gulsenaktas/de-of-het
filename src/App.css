@@ -499,9 +499,13 @@
   opacity: 0.55;
 }
 
-.result__best {
+.result__stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 14px;
   margin-top: auto;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
 }
 
