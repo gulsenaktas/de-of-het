@@ -10,7 +10,9 @@
 </p>
 
 <p align="center">
-  <img src="docs/demo.gif" alt="Gameplay: the start screen, a correct answer with confetti, a wrong answer and the result screen" width="300" />
+  <a href="https://de-of-het-nu.vercel.app">
+    <img src="docs/demo.gif" alt="Gameplay: swiping a card left and right, a correct answer with confetti, a wrong answer and the result screen" width="300" />
+  </a>
 </p>
 
 ## Why
@@ -19,7 +21,7 @@ Every Dutch noun is either *de* or *het*, and there is no reliable way to guess 
 
 ## Features
 
-- **Swipe, tap or use the arrow keys.** One decision per card, no typing.
+- **Swipe, tap or use the arrow keys.** One decision per card, no typing. While you drag, the card tilts and a stamp shows which article you are about to pick.
 - **Spaced repetition.** Words move through five boxes: a correct answer promotes a word, a wrong one sends it back to the start. The gap before a word returns grows from 1 to 16 rounds.
 - **1500 words** from the most frequent Dutch nouns, introduced in order of frequency. Each has an English meaning and, for about 280 of them, an emoji.
 - **Rule hints.** After a wrong answer, words with a reliable ending (-je, -heid, -teit, -tie, -ing and a few more) show the rule behind them.
@@ -31,13 +33,21 @@ Every Dutch noun is either *de* or *het*, and there is no reliable way to guess 
 
 <table>
   <tr>
-    <td align="center"><img src="docs/screenshots/start.jpg" alt="Start screen" width="200" /></td>
-    <td align="center"><img src="docs/screenshots/game.jpg" alt="Correct answer with confetti" width="200" /></td>
-    <td align="center"><img src="docs/screenshots/wrong.jpg" alt="Wrong answer feedback" width="200" /></td>
-    <td align="center"><img src="docs/screenshots/result.jpg" alt="Result screen" width="200" /></td>
+    <td align="center"><img src="docs/screenshots/start.jpg" alt="Start screen" width="220" /></td>
+    <td align="center"><img src="docs/screenshots/swipe-left.jpg" alt="Swiping a card left: the card tilts and a DE stamp appears" width="220" /></td>
+    <td align="center"><img src="docs/screenshots/swipe-right.jpg" alt="Swiping a card right: the card tilts and a HET stamp appears" width="220" /></td>
   </tr>
   <tr>
     <td align="center">Start</td>
+    <td align="center">Swipe left for <strong>de</strong></td>
+    <td align="center">Swipe right for <strong>het</strong></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screenshots/right-answer.jpg" alt="Correct answer with confetti" width="220" /></td>
+    <td align="center"><img src="docs/screenshots/wrong-answer.jpg" alt="Wrong answer feedback" width="220" /></td>
+    <td align="center"><img src="docs/screenshots/result.jpg" alt="Result screen" width="220" /></td>
+  </tr>
+  <tr>
     <td align="center">Right answer</td>
     <td align="center">Wrong answer</td>
     <td align="center">Round result</td>
