@@ -1,0 +1,60 @@
+:root {
+  --cream: #fff1d6;
+  --sky: #ffe7c2;
+  --ink: #1a1a40;
+  --orange: #ff7a1a;
+  --blue: #2b4ee6;
+  --pink: #ff5c8a;
+  --green: #1fb877;
+  --red: #f0443a;
+  --yellow: #ffc93c;
+  --card: #ffffff;
+
+  --border: 3px solid var(--ink);
+  --shadow: 0 6px 0 var(--ink);
+
+  color-scheme: light;
+  font-family: 'Fredoka Variable', 'Fredoka', system-ui, sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(var(--cream), var(--sky));
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+h3,
+p,
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
