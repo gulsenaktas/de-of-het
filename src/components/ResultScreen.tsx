@@ -70,7 +70,7 @@ export function ResultScreen({ answers, bestStreak, progress, onPlayAgain }: Res
         </div>
       )}
 
-      <p className="result__stats">
+      <p className="stats result__stats">
         <span>🌱 {practising} practising</span>
         <span>🎓 {learned} learned</span>
         <span>🔥 Best streak: {bestStreak}</span>

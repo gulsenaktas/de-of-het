@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, motion, useAnimate } from 'motion/react'
 import type { Article, Word } from './data/words'
-import { completeRound, readProgress, recordAnswer, saveProgress } from './game/progress'
+import { completeRound, EMPTY_PROGRESS, readProgress, recordAnswer, saveProgress } from './game/progress'
 import { buildRound, readBestStreak, saveBestStreak, type Answer } from './game/round'
 import { ruleFor } from './game/rules'
 import { useSound } from './game/useSound'
@@ -9,6 +9,7 @@ import { Confetti } from './components/Confetti'
 import { ResultScreen } from './components/ResultScreen'
 import { Skyline } from './components/Skyline'
 import { SoundToggle } from './components/SoundToggle'
+import { StartScreen } from './components/StartScreen'
 import { WordCard } from './components/WordCard'
 import './App.css'
 
@@ -28,6 +29,7 @@ interface Feedback {
 }
 
 export default function App() {
+  const [started, setStarted] = useState(false)
   const [progress, setProgress] = useState(readProgress)
   const [round, setRound] = useState(() => buildRound(progress))
   const [answers, setAnswers] = useState<Answer[]>([])
@@ -46,7 +48,7 @@ export default function App() {
 
   const answer = useCallback(
     (picked: Article) => {
-      if (!current) return
+      if (!started || !current) return
       const correct = picked === current.article
       const nextStreak = correct ? streak + 1 : 0
       const isLastWord = index === round.length - 1
@@ -76,7 +78,7 @@ export default function App() {
         animateStack(stackRef.current, { x: [0, -12, 12, -7, 7, 0] }, { duration: 0.4 })
       }
     },
-    [current, streak, bestStreak, index, round.length, animateStack, stackRef, playSound],
+    [started, current, streak, bestStreak, index, round.length, animateStack, stackRef, playSound],
   )
 
   useEffect(() => {
@@ -106,12 +108,39 @@ export default function App() {
     return () => clearTimeout(timer)
   }, [finished, showResult, answers, playSound])
 
-  function playAgain() {
+  function startRound() {
     setRound(buildRound(progress))
     setAnswers([])
     setStreak(0)
     setFeedback(null)
     setShowResult(false)
+    setStarted(true)
+  }
+
+  function resetProgress() {
+    setProgress(EMPTY_PROGRESS)
+    setBestStreak(0)
+    saveBestStreak(0)
+  }
+
+  if (!started) {
+    return (
+      <div className="app">
+        <div className="cloud cloud--one" aria-hidden />
+        <div className="cloud cloud--two" aria-hidden />
+        <Skyline />
+        <main className="game">
+          <StartScreen
+            progress={progress}
+            bestStreak={bestStreak}
+            soundEnabled={sound.enabled}
+            onToggleSound={sound.toggle}
+            onStart={startRound}
+            onReset={resetProgress}
+          />
+        </main>
+      </div>
+    )
   }
 
   return (
@@ -123,7 +152,9 @@ export default function App() {
       <main className="game">
         <header className="hud">
           <h1 className="logo">
-            <span className="logo__de">de</span> of <span className="logo__het">het</span>?
+            <button className="logo__home" onClick={() => setStarted(false)} aria-label="De of het? Back to start">
+              <span className="logo__de">de</span> of <span className="logo__het">het</span>?
+            </button>
           </h1>
           <div className="hud__actions">
             <SoundToggle enabled={sound.enabled} onToggle={sound.toggle} />
@@ -141,7 +172,7 @@ export default function App() {
         </header>
 
         {showResult ? (
-          <ResultScreen answers={answers} bestStreak={bestStreak} progress={progress} onPlayAgain={playAgain} />
+          <ResultScreen answers={answers} bestStreak={bestStreak} progress={progress} onPlayAgain={startRound} />
         ) : (
           <>
             <ol className="progress" aria-label={`Word ${Math.min(index + 1, round.length)} of ${round.length}`}>
